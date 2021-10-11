@@ -7,8 +7,9 @@ function computerPlay(){
     return computerAnswer;   
 }
 function playerPlay(){
-    let playerAnswer = prompt("Choose between Rock, Paper or Scissors");
-    return playerAnswer.toLowerCase();
+    let playerAnswer = "rock";
+    return playerAnswer;
+    
 }
 
 
@@ -17,76 +18,87 @@ function playRound(computerSelection, playerSelection)
 {
     if (playerSelection == "rock" && computerSelection == "rock")
     {
-        return "It's a tie this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
+        resultsPanel.textContent = "It's a tie this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
     }
     else if (playerSelection == "rock" && computerSelection == "paper")
     {
         computerScore++;
-        return "You lost this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
+        resultsPanel.textContent = "You lost this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
         
         
     }
     else if (playerSelection == "rock" && computerSelection == "scissors")
     {
         playerScore++;
-        return "You won this round! You chose " + playerSelection + " | Computer chose: " +computerSelection  ;
+        resultsPanel.textContent = "You won this round! You chose " + playerSelection + " | Computer chose: " +computerSelection  ;
         
     }
     else if (playerSelection == "paper" && computerSelection == "rock")
     {
         playerScore++;
-        return "You won this round! You chose " + playerSelection + " | Computer chose: " +computerSelection  ;
+        resultsPanel.textContent = "You won this round! You chose " + playerSelection + " | Computer chose: " +computerSelection  ;
         
     }
     else if (playerSelection == "paper" && computerSelection == "paper")
     {
-        return "It's a tie this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
+        resultsPanel.textContent = "It's a tie this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
     }
     else if (playerSelection == "paper" && computerSelection == "scissors")
     {
         computerScore++;
-        return "You lost this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
+        resultsPanel.textContent = "You lost this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
         
     }
     else if (playerSelection == "scissors" && computerSelection == "rock")
     {
         computerScore++;
-        return "You lost this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
+        resultsPanel.textContent = "You lost this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
     }
     else if (playerSelection == "scissors" && computerSelection == "paper")
     {
         playerScore++;
-        return "You won this round! You chose " + playerSelection + " | Computer chose: " +computerSelection  ;
+        resultsPanel.textContent = "You won this round! You chose " + playerSelection + " | Computer chose: " +computerSelection  ;
         
     }
     
     else if (playerSelection == "scissors" && computerSelection == "scissors")
     {
-        return "It's a tie this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
+        resultsPanel.textContent = "It's a tie this round! You chose: " + playerSelection + " | Computer chose: " + computerSelection;
     }
     
+playerDisplayScore.textContent = playerScore;
+computerDisplayScore.textContent = computerScore;
+roundsLeft--;
+roundsLeftDisplay.textContent = roundsLeft;
+showScore();
 
 }
 
 function showScore(){
-    console.log("Current score is:");
-    console.log("Player: " + playerScore);
-    console.log("Computer: " + computerScore);
-    console.log("Rounds left: " + roundsLeft);
+
     if (roundsLeft === 0)
     {
         if (playerScore > computerScore)
         {
-            console.log("The game is now over. You are the winner with " + playerScore + " points!");
+            resultsPanel.textContent = "The game is now over. You are the winner with " + playerScore + " points!";
+            continueGame = prompt("You won!!! Play again? Y/N");
         }
         else if (playerScore < computerScore)
         {
-            console.log("The game is now over. Computer was the winner with " + computerScore +" points!");
+            resultsPanel.textContent = "The game is now over. Computer was the winner with " + computerScore +" points!";
+            continueGame = prompt("You lost... Play again? :) Y/N");
         }
         else if (playerScore === computerScore)
         {
-            console.log("The game is now over. It was a tie!");
+            resultsPanel.textContent = "The game is now over. It was a tie!";
+            continueGame = prompt("It was a tie! Play again? Y/N");
         }
+        
+        if (continueGame === "Y")
+        {
+            initializeGame();
+        }
+        
     }
 }
 
@@ -94,27 +106,44 @@ function initializeGame(){
     computerScore = 0;
     playerScore = 0;
     roundsLeft = 5;
+    playerDisplayScore.textContent = playerScore;
+    computerDisplayScore.textContent = computerScore;
+    roundsLeftDisplay.textContent = roundsLeft;
+    resultsPanel.textContent = "";
 }
 
-function game(){
-    initializeGame();
-    while (roundsLeft > 0)
-    {
-    let computerSelection = computerPlay();
-    let playerSelection = playerPlay();
-    console.log(playRound(computerSelection,playerSelection));
-    roundsLeft--;
-    showScore();
-    
-    }
-    
-}
 
+
+const buttons = document.querySelectorAll(".btn");
+    buttons.forEach(function(btn){
+        btn.addEventListener("click", function(){
+            playerSelection = btn.textContent.toLowerCase();
+            computerSelection = computerPlay();
+           playRound(computerSelection, playerSelection);
+           
+        })
+        
+    })
+    
+let continueGame
+let computerSelection;
+let playerSelection;
 let computerScore = 0;
 let playerScore = 0;
+
 let roundsLeft = 5;
 
+const resultsPanel = document.querySelector(".results");
+const playerDisplayScore = document.querySelector(".playerScore");
+const computerDisplayScore = document.querySelector(".computerScore");
+const roundsLeftDisplay = document.querySelector(".roundsLeft");
 
 
-game();
-// console.log(playRound(computerSelection,playerSelection));
+
+
+
+
+
+
+
+
